@@ -1,4 +1,3 @@
-import json
 from flask import Flask, request
 from nz_covid19_lit.constants import *
 from nz_covid19_lit.controller import NZCovid19Lit
