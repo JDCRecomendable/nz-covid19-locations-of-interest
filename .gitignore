@@ -1,0 +1,13 @@
+# Python- and IDE-related files
+.idea/
+venv/
+*.pyc
+
+# Project-specific files
+data.txt
+
+# macOS files
+.DS_Store
+._*
+.AppleDouble
+.LSOverride
