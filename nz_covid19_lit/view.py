@@ -1,5 +1,5 @@
 import json
-from flask import Flask
+from flask import Flask, request
 from nz_covid19_lit.constants import *
 from nz_covid19_lit.controller import NZCovid19Lit
 
@@ -13,37 +13,94 @@ def auto_refresh():
         nz_covid19_lit.refresh_data()
 
 
-@app.route('/')
-def show_all():
+def is_filtered(http_request):
+    if http_request.method == 'GET':
+        return False
+    request_body_json = request.get_json()
+    if 'isFiltered' not in request_body_json:
+        return False
+    return request_body_json['isFiltered']
+
+
+def process_filter(request_body_json):
+    nz_covid19_lit.clear_filters()
+    if 'startDate' in request_body_json\
+            and 'endDate' in request_body_json:
+        start_date_string = request_body_json['startDate']
+        end_date_string = request_body_json['endDate']
+        nz_covid19_lit.filter_by_date(start_date_string, end_date_string)
+    if 'locationName' in request_body_json\
+            and 'locationIsExact' in request_body_json:
+        location_name = request_body_json['locationName']
+        location_is_exact = request_body_json['locationIsExact']
+        nz_covid19_lit.filter_by_location_name(location_name, location_is_exact)
+    if 'exposureType' in request_body_json\
+            and 'locationIsExact' in request_body_json:
+        exposure_type = request_body_json['exposureType']
+        exposure_is_exact = request_body_json['exposureIsExact']
+        nz_covid19_lit.filter_by_exposure_type(exposure_type, exposure_is_exact)
+    if 'startLatitude' in request_body_json\
+            and 'endLatitude' in request_body_json:
+        start_latitude = request_body_json['startLatitude']
+        end_latitude = request_body_json['endLatitude']
+        nz_covid19_lit.filter_by_latitude(start_latitude, end_latitude)
+    if 'startLongitude' in request_body_json\
+            and 'endLongitude' in request_body_json:
+        start_longitude = request_body_json['startLongitude']
+        end_longitude = request_body_json['endLongitude']
+        nz_covid19_lit.filter_by_longitude(start_longitude, end_longitude)
+    if 'suburb' in request_body_json\
+            and 'suburbIsExact' in request_body_json:
+        suburb = request_body_json['suburb']
+        suburb_is_exact = request_body_json['suburbIsExact']
+        nz_covid19_lit.filter_by_suburb(suburb, suburb_is_exact)
+    if 'city' in request_body_json\
+            and 'cityIsExact' in request_body_json:
+        city = request_body_json['city']
+        city_is_exact = request_body_json['cityIsExact']
+        nz_covid19_lit.filter_by_city(city, city_is_exact)
+    if 'address' in request_body_json\
+            and 'addressIsExact' in request_body_json:
+        address = request_body_json['address']
+        address_is_exact = request_body_json['addressIsExact']
+        nz_covid19_lit.filter_by_address(address, address_is_exact)
+
+
+@app.route('/', methods=['GET', 'POST'])
+def show():
     auto_refresh()
+    if is_filtered(request):
+        request_body_json = request.get_json()
+        process_filter(request_body_json)
+        return nz_covid19_lit.fetch_filtered()
     return nz_covid19_lit.fetch_all()
 
 
-@app.route('/locations/')
+@app.route('/locations/', methods=['GET', 'POST'])
 def show_location_names():
     auto_refresh()
     return nz_covid19_lit.list_location_names()
 
 
-@app.route('/exposure-types/')
+@app.route('/exposure-types/', methods=['GET', 'POST'])
 def show_exposure_types():
     auto_refresh()
     return nz_covid19_lit.list_exposure_types()
 
 
-@app.route('/suburbs/')
+@app.route('/suburbs/', methods=['GET', 'POST'])
 def show_suburbs():
     auto_refresh()
     return nz_covid19_lit.list_suburbs()
 
 
-@app.route('/cities/')
+@app.route('/cities/', methods=['GET', 'POST'])
 def show_cities():
     auto_refresh()
     return nz_covid19_lit.list_cities()
 
 
-@app.route('/addresses/')
+@app.route('/addresses/', methods=['GET', 'POST'])
 def show_addresses():
     auto_refresh()
     return nz_covid19_lit.list_addresses()
