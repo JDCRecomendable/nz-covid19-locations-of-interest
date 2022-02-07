@@ -16,6 +16,7 @@ def show():
 
 
 @app.route('/locations/', methods=['GET', 'POST'])
+@app.route('/locations', methods=['GET', 'POST'])
 def show_location_names():
     nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
@@ -25,6 +26,7 @@ def show_location_names():
 
 
 @app.route('/exposure-types/', methods=['GET', 'POST'])
+@app.route('/exposure-types', methods=['GET', 'POST'])
 def show_exposure_types():
     nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
@@ -34,6 +36,7 @@ def show_exposure_types():
 
 
 @app.route('/suburbs/', methods=['GET', 'POST'])
+@app.route('/suburbs', methods=['GET', 'POST'])
 def show_suburbs():
     nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
@@ -43,6 +46,7 @@ def show_suburbs():
 
 
 @app.route('/cities/', methods=['GET', 'POST'])
+@app.route('/cities', methods=['GET', 'POST'])
 def show_cities():
     nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
@@ -52,6 +56,7 @@ def show_cities():
 
 
 @app.route('/addresses/', methods=['GET', 'POST'])
+@app.route('/addresses', methods=['GET', 'POST'])
 def show_addresses():
     nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
