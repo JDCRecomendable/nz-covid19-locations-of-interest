@@ -6,7 +6,8 @@ from nz_covid19_lit.controller import NZCovid19Lit
 app = Flask('__main__')
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/api/v0/', methods=['GET', 'POST'])
+@app.route('/api/v0', methods=['GET', 'POST'])
 def show():
     nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
@@ -15,8 +16,8 @@ def show():
     return make_response(nz_covid19_lit.fetch())
 
 
-@app.route('/locations/', methods=['GET', 'POST'])
-@app.route('/locations', methods=['GET', 'POST'])
+@app.route('/api/v0/locations/', methods=['GET', 'POST'])
+@app.route('/api/v0/locations', methods=['GET', 'POST'])
 def show_location_names():
     nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
@@ -25,8 +26,8 @@ def show_location_names():
     return make_response(nz_covid19_lit.list_location_names())
 
 
-@app.route('/exposure-types/', methods=['GET', 'POST'])
-@app.route('/exposure-types', methods=['GET', 'POST'])
+@app.route('/api/v0/exposure-types/', methods=['GET', 'POST'])
+@app.route('/api/v0/exposure-types', methods=['GET', 'POST'])
 def show_exposure_types():
     nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
@@ -35,8 +36,8 @@ def show_exposure_types():
     return make_response(nz_covid19_lit.list_exposure_types())
 
 
-@app.route('/suburbs/', methods=['GET', 'POST'])
-@app.route('/suburbs', methods=['GET', 'POST'])
+@app.route('/api/v0/suburbs/', methods=['GET', 'POST'])
+@app.route('/api/v0/suburbs', methods=['GET', 'POST'])
 def show_suburbs():
     nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
@@ -45,8 +46,8 @@ def show_suburbs():
     return make_response(nz_covid19_lit.list_suburbs())
 
 
-@app.route('/cities/', methods=['GET', 'POST'])
-@app.route('/cities', methods=['GET', 'POST'])
+@app.route('/api/v0/cities/', methods=['GET', 'POST'])
+@app.route('/api/v0/cities', methods=['GET', 'POST'])
 def show_cities():
     nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
@@ -55,8 +56,8 @@ def show_cities():
     return make_response(nz_covid19_lit.list_cities())
 
 
-@app.route('/addresses/', methods=['GET', 'POST'])
-@app.route('/addresses', methods=['GET', 'POST'])
+@app.route('/api/v0/addresses/', methods=['GET', 'POST'])
+@app.route('/api/v0/addresses', methods=['GET', 'POST'])
 def show_addresses():
     nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
