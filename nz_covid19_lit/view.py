@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, jsonify, request
 from nz_covid19_lit.constants import *
 from nz_covid19_lit.controller import NZCovid19Lit
 
@@ -13,38 +13,38 @@ def show():
     if is_filtered(request):
         request_body_json = request.get_json()
         process_filter(request_body_json)
-        return nz_covid19_lit.fetch_filtered()
-    return nz_covid19_lit.fetch_all()
+        return make_response(nz_covid19_lit.fetch_filtered())
+    return make_response(nz_covid19_lit.fetch_all())
 
 
 @app.route('/locations/', methods=['GET', 'POST'])
 def show_location_names():
     auto_refresh()
-    return nz_covid19_lit.list_location_names()
+    return make_response(nz_covid19_lit.list_location_names())
 
 
 @app.route('/exposure-types/', methods=['GET', 'POST'])
 def show_exposure_types():
     auto_refresh()
-    return nz_covid19_lit.list_exposure_types()
+    return make_response(nz_covid19_lit.list_exposure_types())
 
 
 @app.route('/suburbs/', methods=['GET', 'POST'])
 def show_suburbs():
     auto_refresh()
-    return nz_covid19_lit.list_suburbs()
+    return make_response(nz_covid19_lit.list_suburbs())
 
 
 @app.route('/cities/', methods=['GET', 'POST'])
 def show_cities():
     auto_refresh()
-    return nz_covid19_lit.list_cities()
+    return make_response(nz_covid19_lit.list_cities())
 
 
 @app.route('/addresses/', methods=['GET', 'POST'])
 def show_addresses():
     auto_refresh()
-    return nz_covid19_lit.list_addresses()
+    return make_response(nz_covid19_lit.list_addresses())
 
 
 def auto_refresh():
@@ -103,3 +103,9 @@ def process_filter(request_body_json):
         address = request_body_json['address']
         address_is_exact = request_body_json['addressIsExact']
         nz_covid19_lit.filter_by_address(address, address_is_exact)
+
+
+def make_response(raw_data):
+    response = jsonify(raw_data)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
