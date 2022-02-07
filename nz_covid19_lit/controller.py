@@ -24,8 +24,7 @@ class NZCovid19Lit:
             self.refresh_data()
             return
 
-        self._data = self._root['data']
-        self._filtered = dict(self._data)
+        self._filtered = dict(self._root['data'])
 
     def is_recent(self):
         data_timestamp = datetime.fromisoformat(self._root['timestamp'])
@@ -35,20 +34,17 @@ class NZCovid19Lit:
         return True
 
     def refresh_data(self):
-        self._data = get_data(self._url_to_nz_covid19_lit)
+        latest_data = get_data(self._url_to_nz_covid19_lit)
         now = datetime.now(timezone.utc)
         data_timestamp = datetime.isoformat(now)
-        self._root = {'timestamp': data_timestamp, 'data': self._data}
+        self._root = {'timestamp': data_timestamp, 'data': latest_data}
         save_to_file(self._path_to_data, self._root)
 
-    def fetch_all(self):
-        return self._data
-
-    def fetch_filtered(self):
+    def fetch(self):
         return self._filtered
 
     def clear_filters(self):
-        self._filtered = dict(self._data)
+        self._filtered = dict(self._root['data'])
 
     def filter_by_date(self, start_date_string, end_date_string):
         entries = {'items': []}

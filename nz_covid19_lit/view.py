@@ -13,8 +13,7 @@ def show():
     if is_filtered(request):
         request_body_json = request.get_json()
         process_filter(request_body_json)
-        return make_response(nz_covid19_lit.fetch_filtered())
-    return make_response(nz_covid19_lit.fetch_all())
+    return make_response(nz_covid19_lit.fetch())
 
 
 @app.route('/locations/', methods=['GET', 'POST'])
