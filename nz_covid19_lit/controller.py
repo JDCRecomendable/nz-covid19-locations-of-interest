@@ -37,7 +37,8 @@ class NZCovid19Lit:
         latest_data = get_data(self._url_to_nz_covid19_lit)
         now = datetime.now(timezone.utc)
         data_timestamp = datetime.isoformat(now)
-        self._root = {'timestamp': data_timestamp, 'data': latest_data}
+        self._root['timestamp'] = data_timestamp
+        self._root['data'] = latest_data
         save_to_file(self._path_to_data, self._root)
 
     def fetch(self):
