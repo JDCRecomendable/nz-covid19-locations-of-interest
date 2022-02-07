@@ -16,8 +16,8 @@ def show():
     return make_response(nz_covid19_lit.fetch())
 
 
-@app.route('/api/v0/locations/', methods=['GET', 'POST'])
-@app.route('/api/v0/locations', methods=['GET', 'POST'])
+@app.route('/api/v0/locations-names/', methods=['GET', 'POST'])
+@app.route('/api/v0/locations-names', methods=['GET', 'POST'])
 def show_location_names():
     nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
