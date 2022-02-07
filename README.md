@@ -26,8 +26,8 @@ To interact with the server, one can make HTTP GET and POST requests to the foll
 To list all entries of locations of interest from the API (e.g. the `addresses` of all locations of interest, or all
 `cities` with at least one location of interest), the user should send a HTTP GET request to the respective endpoint.
 
-To filter for specific entries of locations of interest instead, the user should a HTTP POST request to the respective
-endpoint with a corresponding JSON body specifying the filters.
+To filter for specific entries of locations of interest instead, the user should send a HTTP POST request to the
+respective endpoint with a corresponding JSON body specifying the filters.
 
 As an example, to obtain the list of all suburbs with locations of interest using `v0` of the API, the developer should
 make a HTTP GET request to:
