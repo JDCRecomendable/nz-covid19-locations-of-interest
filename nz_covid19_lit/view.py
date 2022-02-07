@@ -4,66 +4,67 @@ from nz_covid19_lit.controller import NZCovid19Lit
 
 
 app = Flask('__main__')
-nz_covid19_lit = NZCovid19Lit(url, path_to_data, seconds_before_next_update)
 
 
 @app.route('/', methods=['GET', 'POST'])
 def show():
-    auto_refresh()
+    nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
         request_body_json = request.get_json()
-        process_filter(request_body_json)
+        process_filter(nz_covid19_lit, request_body_json)
     return make_response(nz_covid19_lit.fetch())
 
 
 @app.route('/locations/', methods=['GET', 'POST'])
 def show_location_names():
-    auto_refresh()
+    nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
         request_body_json = request.get_json()
-        process_filter(request_body_json)
+        process_filter(nz_covid19_lit, request_body_json)
     return make_response(nz_covid19_lit.list_location_names())
 
 
 @app.route('/exposure-types/', methods=['GET', 'POST'])
 def show_exposure_types():
-    auto_refresh()
+    nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
         request_body_json = request.get_json()
-        process_filter(request_body_json)
+        process_filter(nz_covid19_lit, request_body_json)
     return make_response(nz_covid19_lit.list_exposure_types())
 
 
 @app.route('/suburbs/', methods=['GET', 'POST'])
 def show_suburbs():
-    auto_refresh()
+    nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
         request_body_json = request.get_json()
-        process_filter(request_body_json)
+        process_filter(nz_covid19_lit, request_body_json)
     return make_response(nz_covid19_lit.list_suburbs())
 
 
 @app.route('/cities/', methods=['GET', 'POST'])
 def show_cities():
-    auto_refresh()
+    nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
         request_body_json = request.get_json()
-        process_filter(request_body_json)
+        process_filter(nz_covid19_lit, request_body_json)
     return make_response(nz_covid19_lit.list_cities())
 
 
 @app.route('/addresses/', methods=['GET', 'POST'])
 def show_addresses():
-    auto_refresh()
+    nz_covid19_lit = make_nz_covid19_lit()
     if is_filtered(request):
         request_body_json = request.get_json()
-        process_filter(request_body_json)
+        process_filter(nz_covid19_lit, request_body_json)
     return make_response(nz_covid19_lit.list_addresses())
 
 
-def auto_refresh():
+def make_nz_covid19_lit():
+    nz_covid19_lit = NZCovid19Lit(url, path_to_data, seconds_before_next_update)
     if not nz_covid19_lit.is_recent():
         nz_covid19_lit.refresh_data()
+    return nz_covid19_lit
 
 
 def is_filtered(http_request):
@@ -75,7 +76,7 @@ def is_filtered(http_request):
     return request_body_json['isFiltered']
 
 
-def process_filter(request_body_json):
+def process_filter(nz_covid19_lit, request_body_json):
     nz_covid19_lit.clear_filters()
     if 'startDate' in request_body_json\
             and 'endDate' in request_body_json:
