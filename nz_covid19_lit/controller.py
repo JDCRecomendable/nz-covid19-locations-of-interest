@@ -18,13 +18,16 @@ class NZCovid19Lit:
 
         if 'error' in self._root:
             self.refresh_data()
+            self.clear_filters()
             return
 
         if not self.is_recent():
             self.refresh_data()
+            self.clear_filters()
             return
 
         self._filtered = dict(self._root['data'])
+        print(self._filtered)
 
     def is_recent(self):
         data_timestamp = datetime.fromisoformat(self._root['timestamp'])
@@ -103,7 +106,7 @@ class NZCovid19Lit:
     def __filter_by_attribute(self, attribute_key, attribute_value, exact):
         entries = {'items': []}
         target_attribute = attribute_value.lower()
-        for item in self._filtered['items']:
+        for item in self._filtered['items']['items']:
             item_attribute = item[attribute_key].lower()
             if exact and target_attribute == item_attribute \
                     or not exact and target_attribute in item_attribute:
@@ -116,7 +119,7 @@ class NZCovid19Lit:
         entries = {'items': []}
         target_attribute_value_start = float(location_attribute_value_start)
         target_attribute_value_end = float(location_attribute_value_end)
-        for item in self._filtered['items']:
+        for item in self._filtered['items']['items']:
             if not item['location'][location_attribute_key]:
                 continue
             item_attribute = float(item['location'][location_attribute_key])
@@ -128,7 +131,7 @@ class NZCovid19Lit:
     def __filter_by_location_attribute(self, location_attribute_key, location_attribute_value, exact):
         entries = {'items': []}
         target_location_attribute = location_attribute_value.lower()
-        for item in self._filtered['items']:
+        for item in self._filtered['items']['items']:
             item_location_attribute = item['location'][location_attribute_key].lower()
             if exact and target_location_attribute == item_location_attribute\
                     or not exact and target_location_attribute in item_location_attribute:
@@ -138,7 +141,7 @@ class NZCovid19Lit:
 
     def __list_attribute(self, attribute_key):
         entries = set()
-        for item in self._filtered['items']:
+        for item in self._filtered['items']['items']:
             entry_formatted = item[attribute_key].strip()
             if not entry_formatted:
                 continue
@@ -149,7 +152,7 @@ class NZCovid19Lit:
 
     def __list_location_attribute(self, location_attribute_key):
         entries = set()
-        for item in self._filtered['items']:
+        for item in self._filtered['items']['items']:
             entry_formatted = item['location'][location_attribute_key].strip()
             if not entry_formatted:
                 continue
