@@ -13,7 +13,7 @@ import nz_covid19_lit.view
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    nz_covid19_lit.view.app.run(debug=True, host='localhost', port='8080')
+    nz_covid19_lit.view.app.run(debug=True, host='0.0.0.0', port='8080')
     # print_hi('PyCharm')
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
